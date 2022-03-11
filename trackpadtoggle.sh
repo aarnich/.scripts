@@ -1,5 +1,5 @@
 #!/bin/bash
-if xinput list-props 13 | grep "Device Enabled (184):.*1" >/dev/null
+if xinput list-props 13 | grep "Device Enabled (186):.*1" >/dev/null
 then
   notify-send "Trackpad disabled"
   xinput disable 13
