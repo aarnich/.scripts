@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sudo killall -q picom
+sudo cp /usr/share/archcraft/dwm/fancypicom.conf /usr/share/archcraft/dwm/picom.conf
+picom --config /usr/share/archcraft/dwm/picom.conf &

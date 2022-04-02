@@ -1,4 +1,5 @@
 #!/bin/bash
+
 scripts_dir=$HOME/.scripts/
 echo "what is the script called: "
 read script_name

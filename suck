@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cp source/config.def.h source/config.h
+makepkg -f
+sudo pacman -U *.pkg.tar.zst
