@@ -1,0 +1,92 @@
+default_code_dir=$HOME/code
+ls="ls --color=tty"
+
+# if no command line arguments are supplied
+if [ $# -eq 0 ]
+then
+  lvim $default_code_dir
+  exit
+fi
+
+if [ $1 = "list" ]
+then
+  directory=$default_code_dir
+  # check if second argument is supplied
+  if [ $# -eq 2 ]
+  then
+    if [ -d $default_code_dir/$2 ]
+    then
+      directory=$default_code_dir/$2
+    else
+      echo "Directory $2 does not exist"
+      exit
+    fi
+  fi
+
+  # check if there are no folders in the directory
+  if [ $(ls -l $directory | grep "^d" | wc -l) -eq 0 ]
+  then
+    echo "No projects in $directory"
+    # ask if user would like to list files in the directory
+    read -p "Would you like to list files in $directory? (y/n) " answer
+    if [ $answer = "y" ]
+    then
+      ls --color=tty $directory
+    fi
+
+    exit
+  else
+    echo "Available projects:"
+    $ls -d $directory/*/
+  fi
+  exit
+fi
+
+project=$1
+code_dir=$default_code_dir
+
+# check if second commandline argument exists
+if [ -z "$2" ]
+then
+    code_dir=$default_code_dir
+else
+    subdir=$2
+    code_dir=$default_code_dir
+    # check if subdir exists 
+    if [ -d "$code_dir/$subdir" ]
+    then
+        code_dir=$code_dir$/subdir
+    else
+        echo $subdir " does not exist."
+        exit
+    fi
+fi
+
+
+
+
+# check if project exists in directory
+if [ ! -d $code_dir/$project ]; then
+    echo "Project $project does not exist in $code_dir"
+    # ask if user would like to create a new project directory input name
+    echo "Would you like to create a new project directory? (y/n) "
+    read REPLY
+    # if yes, create directory
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        mkdir $code_dir/$project
+        echo "Created project directory $code_dir/$project"
+    fi
+
+  else
+    echo "Project $project exists in $code_dir"
+    cd $code_dir/$project
+    # check if the project has a git repo
+    if [ ! -d .git ]; then
+      echo "Project $project does not have a git repo"
+    else
+      echo "Project $project has a git repo"
+      git pull
+      # open neovim in project directory
+    fi
+    lvim $code_dir/$project
+fi
