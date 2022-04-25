@@ -5,6 +5,10 @@ import shutil
 import argparse
 from pathlib import Path
 
+current_dir = os.getcwd()
+if current_dir == os.path.expanduser('~'):
+    print('You are in your home directory. Please move to a different directory.')
+    exit()
 
 if __name__ == '__main__':
 
@@ -23,11 +27,7 @@ if __name__ == '__main__':
 	)
 	args = parser.parse_args()
 
-	current_dir = os.getcwd()
     # if current_dir is equal to home, exit the script
-    if current_dir == os.path.expanduser('~'):
-        print('You are in your home directory. Please move to a different directory.')
-        exit()
 
 	output_dir = os.path.join(current_dir, args.output_dir)
 	Path(output_dir).mkdir(exist_ok=True)
