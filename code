@@ -51,11 +51,12 @@ then
     code_dir=$default_code_dir
 else
     subdir=$2
-    code_dir=$default_code_dir
+    code_dir=$default_code_dir/$1
     # check if subdir exists 
-    if [ -d "$code_dir/$subdir" ]
+    if [ -d $code_dir/$subdir ]
     then
-        code_dir=$code_dir$/subdir
+        echo $2 "exists"
+        project=$2
     else
         echo $subdir " does not exist."
         exit

@@ -21,18 +21,43 @@ if [ $1 != "png" ] && [ $1 != "jpg" ]
     exit
 fi
 
-echo $2
+
+
+dir=$HOME/Pictures/Wallpapers/
+
+if [ $2 != "-h" ]
+  # check if second argument is a directory
+  then
+    if [ -d $dir$2 ]
+      then
+        dir=$dir$2
+      else
+        echo "invalid directory"
+        exit
+    fi
+fi
+
+wall_dir=$dir
+echo $wall_dir
+
+
 if [[ $2 == "-h" ]]
   then
-    $HOME/.scripts/walls.sh $1
+    $HOME/.scripts/walls.sh $dir $1
 fi
+
+if [[ $3 == "-h" ]]
+  then
+    $HOME/.scripts/walls.sh $dir $1
+fi
+
 
 echo "which wallpaper would you like to set?"
 read wallpaper
-new_wall=$wall_dir$wallpaper.$1
+new_wall=$wall_dir/$wallpaper.$1
 if [ -f "$new_wall" ]; then
     echo "$wallpaper exists."
-    cp $active_wallpaper $wall_dir/active/active.BACK
+    cp $active_wallpaper $HOME/Pictures/Wallpapers/active/active.BACK
     echo "backup created"
     bat $wall_dir/active/active.BACK
     sudo cp $new_wall $active_wallpaper
