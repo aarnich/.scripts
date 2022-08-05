@@ -1,0 +1,4 @@
+#!/bin/sh
+# fetches my .clang-format file from .dotfiles
+
+cp ~/.dotfiles/.clang-format .

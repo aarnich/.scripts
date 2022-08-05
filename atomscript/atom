@@ -1,0 +1,50 @@
+#!/bin/sh
+#creates an atomic program that does one thing; meant for me to code really quickly
+#usage: ./atom <argument> 
+#example: ./atom <atom_name>
+
+# check if user input exists
+if [ -z "$1" ]; then
+  echo "No argument supplied"
+  exit 1
+fi
+
+# check if input is equal to open
+if [ "$1" = "open" ]; then
+. $scriptdir.atomconf
+  # list all atoms in parentdir
+
+fi
+
+scriptdir=$HOME/.scripts/atomscript/
+if [ ! -f $scriptdir.atomconf ]; then
+  echo "input atom parent directory: "
+  read input
+  # if input doesnt exist ask the user again
+  while [ ! -d "$input" ]; do
+    
+    echo "$input does not exist"
+    read input
+  done
+  # parentdir is equal to input
+  touch $scriptdir.atomconf
+  echo "parentdir=$input" > .atomconf
+fi
+
+# read atomconf
+. $scriptdir.atomconf
+
+# if parentdir doesnt exist, exit
+if [ ! -d $parentdir ]; then
+  echo "parent directory doesnt exist"
+  exit
+fi
+
+echo "using $parentdir as atomic parent"
+dir=$parentdir/$1
+
+mkdir $dir
+
+cp $scriptdir/template.c $dir/main.c
+lvim $dir/main.c
+

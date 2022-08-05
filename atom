@@ -1,0 +1,48 @@
+#!/bin/sh
+#creates an atomic program that does one thing; meant for me to code really quickly
+#usage: ./atom <argument> 
+#example: ./atom <atom_name>
+
+# check if user input exists
+if [ -z "$1" ]; then
+  echo "No argument supplied"
+  exit 1
+fi
+
+scriptdir=$HOME/.scripts/atomscript/
+if [ ! -f .atomconf ]; then
+  echo "input atom parent directory: "
+  read input
+  # if input doesnt exist ask the user again
+  while [ ! -d $input ]; do
+    echo "input atom parent directory: "
+    read input
+  done
+  # if input has a duplicate add a random number to input
+  if [ -d $input ]; then
+    input=$input$RANDOM
+  done
+  # parentdir is equal to input
+  touch $scriptdir.atomconf
+  echo "parentdir=$input" > .atomconf
+fi
+
+# read atomconf
+. $scriptdir.atomconf
+
+# if parentdir doesnt exist, exit
+if [ ! -d $parentdir ]; then
+  echo "parent directory doesnt exist"
+  exit
+fi
+
+echo "using $parentdir as atomic parent"
+
+dir=$parentdir/$1
+
+mkdir $dir
+touch $dir/main.c
+
+nvim $dir/main.c
+
+

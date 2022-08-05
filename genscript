@@ -9,6 +9,8 @@ if [ $# -eq 0 ]; then
 fi
 
 touch $scripts_dir/$1
-echo "#!/bin/sh" > $scripts_dir/$1
+echo "give a short description:"
+read description
+echo -e "#!/bin/sh\n $description" > $scripts_dir/$1
 chmod u+x $scripts_dir/$1
 
