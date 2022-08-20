@@ -7,11 +7,16 @@
 # https://github.com/KENJU/git_shellscript 
 
 # get user name
+username=`git config github.user`
+dir_name=`basename $(pwd)`
 if [[ -d ".git" ]]; then
   echo "Repo already exists, nothing to be done"
-  exit
+  echo "Setting up remote... public by default"
+  gh repo create $dir_name --public
+  git remote add origin https://github.com/$username/$dir_name.git
+  git push -u origin master
+  exit 0
 fi
-username=`git config github.user`
 if [ "$username" = "" ]; then
     echo "Could not find username, run 'git config --global github.user <username>'"
     invalid_credentials=1
